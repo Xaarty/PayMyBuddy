@@ -93,4 +93,24 @@ public class UserController {
 
         return ResponseEntity.ok(connectionDTOs);
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> deactivateAccount(@PathVariable Long id) {
+        try {
+            userService.deactivateUser(id);
+            return ResponseEntity.ok("Compte désactivé avec succès.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/users/{id}/enable")
+    public ResponseEntity<?> enable(@PathVariable Long id) {
+        try {
+            userService.activateUser(id);
+            return ResponseEntity.ok("Utilisateur réactivé avec succès.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

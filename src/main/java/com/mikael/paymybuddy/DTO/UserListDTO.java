@@ -7,9 +7,7 @@ public class UserListDTO {
     private String username;
     private String email;
 
-    public UserListDTO() {
-        // constructeur vide pour Jackson
-    }
+    public UserListDTO() {}
 
     public UserListDTO(Long id, String username, String email) {
         this.id = id;

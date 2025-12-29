@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Recharge - Pay My Buddy</title>
+  <link rel="stylesheet" th:href="@{/css/recharge.css}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Pay My Buddy</div>
+  <nav class="nav">
+    <a href="/transfer">Transférer</a>
+    <a href="/profile">Profil</a>
+    <a href="/connections">Ajouter relation</a>
+    <a href="/logout">Se déconnecter</a>
+  </nav>
+</header>
+
+<div class="subnav">
+  <a class="back" href="/profile" aria-label="Retour au profil">←</a>
+</div>
+
+<main class="page">
+  <section class="panel-add">
+
+    <form class="add-form" action="/recharge" method="post">
+      <div class="form-left">
+        <div class="form-title">Recharger mon compte</div>
+
+        <label class="sr-only" for="amount">Montant</label>
+        <input id="amount" name="amount" type="number" step="0.10" min="0.10"
+               placeholder="Montant" required>
+      </div>
+
+      <button type="submit" class="btn">Valider</button>
+    </form>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <p class="success" th:if="${success}" th:text="${success}"></p>
+  </section>
+</main>
+
+</body>
+</html>

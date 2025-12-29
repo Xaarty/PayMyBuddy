@@ -34,18 +34,20 @@ class TransactionServiceTest {
     void testValidTransaction() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
+        sender.setActive(true);
         sender.setBalance(new BigDecimal("100.00"));
 
         User receiver = new User("Bob", "bob@example.com", "pass");
         receiver.setId(2L);
+        sender.setActive(true);
         receiver.setBalance(new BigDecimal("50.00"));
 
         sender.getConnections().add(receiver);
 
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("30.00"), "Cadeau");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(receiver));
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(sender));
+        when(userRepository.findByIdAndActiveTrue(2L)).thenReturn(Optional.of(receiver));
 
         transactionService.processTransaction(1L, dto);
 
@@ -60,15 +62,17 @@ class TransactionServiceTest {
     void testTransactionFailsIfReceiverNotInConnections() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
+        sender.setActive(true);
         sender.setBalance(new BigDecimal("100.00"));
 
         User receiver = new User("Bob", "bob@example.com", "pass");
         receiver.setId(2L);
+        sender.setActive(true);
 
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("10.00"), "Essai");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(receiver));
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(sender));
+        when(userRepository.findByIdAndActiveTrue(2L)).thenReturn(Optional.of(receiver));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> transactionService.processTransaction(1L, dto));
@@ -79,16 +83,18 @@ class TransactionServiceTest {
     void testTransactionFailsIfInsufficientBalance() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
+        sender.setActive(true);
         sender.setBalance(new BigDecimal("5.00"));
 
         User receiver = new User("Bob", "bob@example.com", "pass");
         receiver.setId(2L);
+        sender.setActive(true);
         sender.getConnections().add(receiver);
 
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("10.00"), "Essai");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(receiver));
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(sender));
+        when(userRepository.findByIdAndActiveTrue(2L)).thenReturn(Optional.of(receiver));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> transactionService.processTransaction(1L, dto));
@@ -99,16 +105,18 @@ class TransactionServiceTest {
     void testTransactionFailsIfInvalidAmount() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
+        sender.setActive(true);
         sender.setBalance(new BigDecimal("100.00"));
 
         User receiver = new User("Bob", "bob@example.com", "pass");
         receiver.setId(2L);
+        sender.setActive(true);
         sender.getConnections().add(receiver);
 
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, BigDecimal.ZERO, "Essai");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(receiver));
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(sender));
+        when(userRepository.findByIdAndActiveTrue(2L)).thenReturn(Optional.of(receiver));
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> transactionService.processTransaction(1L, dto));
@@ -119,7 +127,7 @@ class TransactionServiceTest {
     void testTransactionFailsIfSenderNotFound() {
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("20.00"), "Test");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.empty());
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> transactionService.processTransaction(1L, dto));
@@ -130,15 +138,16 @@ class TransactionServiceTest {
     void testTransactionFailsIfReceiverNotFound() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
+        sender.setActive(true);
         sender.setBalance(new BigDecimal("100.00"));
 
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("20.00"), "Test");
 
-        when(userRepository.findById(1L)).thenReturn(Optional.of(sender));
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.of(sender));
+        when(userRepository.findByIdAndActiveTrue(2L)).thenReturn(Optional.empty());
 
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
                 () -> transactionService.processTransaction(1L, dto));
-        assertEquals("Destinataire introuvable", ex.getMessage());
+        assertEquals("Destinataire introuvable ou inactif", ex.getMessage());
     }
 }

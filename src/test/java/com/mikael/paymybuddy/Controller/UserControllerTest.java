@@ -24,16 +24,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -189,7 +187,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("Recharge effectuée avec succès."));
 
-        Mockito.verify(userService).rechargeAccount(userId, dto.getAmount());
+        verify(userService).rechargeAccount(userId, dto.getAmount());
     }
 
     @Test
@@ -267,5 +265,50 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/users/" + mainUser.getId() + "/connections"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].username").value("friend"));
+    }
+
+    @Test
+    void deactivate_user() throws Exception {
+        Long userId = 1L;
+
+        // On ne vérifie pas l'effet mais la réponse
+        mockMvc.perform(delete("/api/users/{id}", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Compte désactivé avec succès."));
+
+        verify(userService).deactivateUser(userId);
+    }
+
+    @Test
+    void deactivation_fails () throws Exception {
+        Long nonExistentId = 999L;
+        doThrow(new IllegalArgumentException("Utilisateur introuvable"))
+                .when(userService).deactivateUser(nonExistentId);
+
+        mockMvc.perform(delete("/api/users/{id}", nonExistentId))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(containsString("Utilisateur introuvable")));
+    }
+
+    @Test
+    void activate_user() throws Exception {
+        Long userId = 2L;
+
+        mockMvc.perform(patch("/api/users/{id}/enable", userId))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Utilisateur réactivé avec succès."));
+
+        verify(userService).activateUser(userId);
+    }
+
+    @Test
+    void activation_fails() throws Exception {
+        Long userId = 99L;
+        doThrow(new IllegalArgumentException("Utilisateur introuvable ou déjà actif"))
+                .when(userService).activateUser(userId);
+
+        mockMvc.perform(patch("/api/users/{id}/enable", userId))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("Utilisateur introuvable ou déjà actif")));
     }
 }

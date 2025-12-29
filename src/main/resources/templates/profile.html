@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil - Pay My Buddy</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">Pay My Buddy</div>
+
+    <nav class="nav">
+        <a href="/transfer">Transférer</a>
+        <a class="active" href="/profile">Profil</a>
+        <a href="/connections">Ajouter relation</a>
+        <a href="/logout">Se déconnecter</a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="panel">
+
+        <div class="rows">
+            <div class="row">
+                <div class="label">Username</div>
+                <div class="value" th:text="${user.username}">@username</div>
+                <div class="chev">›</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Mail</div>
+                <div class="value" th:text="${user.email}">nom@domain.com</div>
+                <div class="chev">›</div>
+            </div>
+
+            <div class="row">
+                <div class="label">Mot de passe</div>
+                <div class="value">••••••••</div>
+                <div class="chev">›</div>
+                <form class="edit" action="/profile/edit" method="get">
+                    <button type="submit" class="btn">Modifier</button>
+                </form>
+                <form class="edit edit-danger" action="/account/deactivate" method="post"
+                      onsubmit="return confirm('Confirmer la désactivation de votre compte ?');">
+                    <button type="submit" class="btn btn-danger">Désactiver</button>
+                </form>
+            </div>
+            <form action="/recharge" method="get" class="recharge">
+                <button class="btn btn2" type="submit">Recharger</button>
+            </form>
+        </div>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+    </section>
+</main>
+
+</body>
+</html>

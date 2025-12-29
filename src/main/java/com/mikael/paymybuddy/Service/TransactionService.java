@@ -29,10 +29,10 @@ public class TransactionService {
             throw new IllegalArgumentException("Le destinataire et le montant sont obligatoires");
         }
 
-        User sender = userRepository.findById(senderId)
+        User sender = userRepository.findByIdAndActiveTrue(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("Expéditeur introuvable"));
-        User receiver = userRepository.findById(dto.getReceiverId())
-                .orElseThrow(() -> new IllegalArgumentException("Destinataire introuvable"));
+        User receiver = userRepository.findByIdAndActiveTrue(dto.getReceiverId())
+                .orElseThrow(() -> new IllegalArgumentException("Destinataire introuvable ou inactif"));
 
         if (!sender.getConnections().contains(receiver)) {
             throw new IllegalArgumentException("Le destinataire n’est pas dans vos connexions.");

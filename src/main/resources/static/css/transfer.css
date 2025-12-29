@@ -1,0 +1,131 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: #111;
+  max-width: 100vw;
+}
+
+.topbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 56px 80px;
+}
+
+.brand{
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.nav{
+  display: flex;
+  gap: 18px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.nav a{
+  color: #111;
+  text-decoration: none;
+}
+
+.nav a.active{
+  color: #207fee;
+  font-weight: 700;
+}
+
+.page{
+  display: flex;
+  justify-content: center;
+  padding-top: 64px;
+}
+
+
+.panel-transfer{
+  width: 1080px;
+  max-width: 90%;
+  padding-top: 64px;
+}
+
+
+.transfer-form{
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr 0.6fr auto;
+  gap: 42px;
+  align-items: center;
+}
+
+.select, .input, .amount{
+  height: 64px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-size: 16px;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.amount{
+  text-align: left;
+  width: 189px;
+  height: 121px;
+}
+
+.btn{
+  width: 147px;
+  height: 64px;
+  border: 0;
+  border-radius: 8px;
+    background: #207fee;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 47px.
+}
+
+.btn:hover{ filter: brightness(0.96); }
+.btn:active{ transform: translateY(1px); }
+
+.table-card{
+  margin-top: 157px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 19px 24px 131px 24px;
+}
+
+.table-title{
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 9px;
+}
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.table th, .table td{
+  padding: 14px 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.table th:last-child,
+.table td:last-child{
+  text-align: right;
+}
+
+.error{
+  margin: 0 0 12px 0;
+  color: #b00020;
+  font-size: 24px;
+}

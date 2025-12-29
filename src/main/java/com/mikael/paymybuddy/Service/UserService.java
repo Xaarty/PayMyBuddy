@@ -1,6 +1,7 @@
 package com.mikael.paymybuddy.Service;
 
 import com.mikael.paymybuddy.DTO.ProfileUpdateDTO;
+import com.mikael.paymybuddy.DTO.UserListDTO;
 import com.mikael.paymybuddy.DTO.UserRegistrationDTO;
 import com.mikael.paymybuddy.Model.User;
 import com.mikael.paymybuddy.Repository.UserRepository;
@@ -59,8 +60,16 @@ public class UserService {
     public boolean userAuthenticate(String email, String password) {
         // Récupèration de l'utilisateur à partir de l'email saisi
         Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) return false;
         //vérification de l'existance du mot de passe
-        return user.isPresent() && passwordEncoder.matches(password, user.get().getPassword());
+        String stored = user.get().getPassword();
+        // évite le WARN + refuse les anciens passwords non-hashés
+        if (stored == null || !stored.startsWith("$2a$") && !stored.startsWith("$2b$") && !stored.startsWith("$2y$")) {
+            return false;
+        }
+
+
+        return passwordEncoder.matches(password, stored);
     }
 
     @Transactional
@@ -116,11 +125,6 @@ public class UserService {
     @Transactional
     public User rechargeAccount(Long userId, BigDecimal amount) {
 
-        //Restreindre le rechargement de compte
-        if (!userId.equals(1L)) {
-            throw new IllegalStateException("Recharge non disponible.");
-        }
-
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Le montant doit être supérieur à 0.");
         }
@@ -131,4 +135,22 @@ public class UserService {
         user.setBalance(user.getBalance().add(amount));
         return userRepository.save(user);
     }
+
+    @Transactional
+    public void deactivateUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable"));
+
+        user.setActive(false);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void activateUser(Long userId) {
+        User user = userRepository.findByIdAndActiveFalse(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable ou déjà actif"));
+        user.setActive(true);
+        userRepository.save(user);
+    }
 }
+

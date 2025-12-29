@@ -6,6 +6,7 @@ import com.mikael.paymybuddy.Model.User;
 import com.mikael.paymybuddy.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -213,5 +214,47 @@ public class UserServiceTest {
         assertThatThrownBy(() -> userService.rechargeAccount(1L, BigDecimal.ZERO))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("Le montant doit être supérieur à 0.");
+    }
+
+    @Test
+    void disable_user() {
+        User user = new User("Jonas", "jonas@example.com", "123");
+        user.setActive(true);
+        userRepository.save(user);
+
+        userService.deactivateUser(user.getId());
+
+        User reloaded = userRepository.findById(user.getId()).orElseThrow();
+        assertThat(reloaded.isActive()).isFalse();
+    }
+
+    @Test
+    void disable_user_not_working() {
+        Long nonExistentId = 9999L;
+
+        assertThatThrownBy(() -> userService.deactivateUser(nonExistentId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Utilisateur introuvable");
+    }
+
+    @Test
+    void activate_user() {
+        User user = new User("Louise", "louise@example.com", "123");
+        user.setActive(false);
+        userRepository.save(user);
+
+        userService.activateUser(user.getId());
+
+        User reloaded = userRepository.findById(user.getId()).orElseThrow();
+        assertThat(reloaded.isActive()).isTrue();
+    }
+
+    @Test
+    void activate_user_not_working() {
+        Long nonExistentId = 8L;
+
+        assertThatThrownBy(() -> userService.activateUser(nonExistentId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Utilisateur introuvable ou déjà actif");
     }
 }
