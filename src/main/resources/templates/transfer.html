@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Transférer - Pay My Buddy</title>
-  <link rel="stylesheet" th:href="@{/css/transfer.css}">
+
+  <link rel="stylesheet"
+        data-th-href="@{/css/transfer.css}"
+        href="/css/transfer.css">
 </head>
 
 <body>
@@ -25,12 +28,13 @@
 
     <form class="transfer-form" action="/transfer" method="post">
 
-      <select name="connectionId" class="select" required>
+      <select id="connection" name="connectionId" class="select" required>
         <option value="" disabled selected>Sélectionner une relation</option>
 
-        <option th:each="c : ${connections}"
-                th:value="${c.id}"
-                th:text="${c.username}">
+        <option data-th-each="c : ${connections}"
+                data-th-value="${c.id}"
+                data-th-text="${c.username}">
+          Relation
         </option>
       </select>
 
@@ -51,9 +55,11 @@
       <button type="submit" class="btn">Payer</button>
 
     </form>
-    <p class="error" th:if="${error}" th:text="${error}"></p>
+
+    <p class="error" data-th-if="${error}" data-th-text="${error}"></p>
+
     <div class="table-card">
-      <h2 class="table-title">Mes Transactions</h2>
+      <h2 class="table-title">Mes transactions</h2>
 
       <table class="table">
         <thead>
@@ -65,13 +71,13 @@
         </thead>
 
         <tbody>
-        <tr th:each="t : ${transactions}">
-          <td th:text="${t.receiver.username}"></td>
-          <td th:text="${t.description}"></td>
-          <td th:text="${t.amount + '€'}"></td>
+        <tr data-th-each="t : ${transactions}">
+          <td data-th-text="${t.receiver.username}">Relation</td>
+          <td data-th-text="${t.description}">Description</td>
+          <td data-th-text="${t.amount + '€'}">0€</td>
         </tr>
 
-        <tr th:if="${#lists.isEmpty(transactions)}">
+        <tr data-th-if="${#lists.isEmpty(transactions)}">
           <td colspan="3">Aucune transaction pour le moment</td>
         </tr>
         </tbody>

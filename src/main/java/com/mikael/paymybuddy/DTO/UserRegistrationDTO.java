@@ -1,6 +1,5 @@
 package com.mikael.paymybuddy.DTO;
 
-//DTO inscription d'un utilisateur
 public class UserRegistrationDTO {
 
     private String username;

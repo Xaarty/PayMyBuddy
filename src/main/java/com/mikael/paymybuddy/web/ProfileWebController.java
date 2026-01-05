@@ -63,7 +63,7 @@ public class ProfileWebController {
             ProfileUpdateDTO dto = new ProfileUpdateDTO();
             dto.setUsername(username);
             dto.setEmail(email);
-            dto.setPassword(password); // si vide, ton service ignore
+            dto.setPassword(password);
 
             userService.updateProfile(userId, dto);
 

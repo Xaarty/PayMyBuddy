@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Modifier profil - Pay My Buddy</title>
-  <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+
+  <link rel="stylesheet"
+        data-th-href="@{/css/profile-edit.css}"
+        href="/css/profile-edit.css">
 </head>
 
 <body>
@@ -11,7 +14,7 @@
 <header class="topbar">
   <div class="brand">Pay My Buddy</div>
 
-  <nav class="nav">
+  <nav class="nav" aria-label="Navigation principale">
     <a href="/transfer">Transférer</a>
     <a class="active" href="/profile">Profil</a>
     <a href="/connections">Ajouter relation</a>
@@ -24,27 +27,44 @@
 </div>
 
 <main class="page">
-  <section class="panel">
-    <p class="error" th:if="${error}" th:text="${error}"></p>
-    <p class="success" th:if="${success}" th:text="${success}"></p>
+  <section class="panel" aria-labelledby="profile-edit-title">
+
+    <h1 id="profile-edit-title" class="sr-only">Modifier le profil</h1>
+
+    <p class="error" data-th-if="${error}" data-th-text="${error}"></p>
+    <p class="success" data-th-if="${success}" data-th-text="${success}"></p>
 
     <form class="form" action="/profile/edit" method="post">
       <div class="field">
         <label class="label" for="username">Username</label>
-        <input class="input" id="username" name="username" type="text"
-               th:value="${user.username}" maxlength="25" required>
+        <input class="input"
+               id="username"
+               name="username"
+               type="text"
+               data-th-value="${user.username}"
+               maxlength="25"
+               required>
       </div>
 
       <div class="field">
         <label class="label" for="email">Mail</label>
-        <input class="input" id="email" name="email" type="email"
-               th:value="${user.email}" maxlength="70" required>
+        <input class="input"
+               id="email"
+               name="email"
+               type="email"
+               data-th-value="${user.email}"
+               maxlength="70"
+               required>
       </div>
 
       <div class="field">
         <label class="label" for="password">Nouveau mot de passe</label>
-        <input class="input" id="password" name="password" type="password"
-               placeholder="vide pour inchangé">
+        <input class="input"
+               id="password"
+               name="password"
+               type="password"
+               placeholder="vide pour inchangé"
+               autocomplete="new-password">
       </div>
 
       <div class="actions">

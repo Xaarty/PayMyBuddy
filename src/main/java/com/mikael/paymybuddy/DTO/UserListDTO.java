@@ -19,7 +19,6 @@ public class UserListDTO {
         return new UserListDTO(user.getId(), user.getUsername(), user.getEmail());
     }
 
-    // Getters requis pour la sérialisation JSON
     public Long getId() {
         return id;
     }

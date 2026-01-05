@@ -1,8 +1,8 @@
 INSERT INTO users (username, email, password, is_active)
 VALUES
-    ('frank', 'frank@example.com', '_-ta96zadftdcashhmpdrtash1', 1),
-    ('jerome',   'jerome@example.com',   '@91jywne2rzcgerhammv-trhash2', 1), 
-    ('bob', 'bob@example.com', '$51y8ulovcyaspa(vshh961getr', 1);
+    ('frank', 'frank@example.com', '$2a$10$WmQwQZ7H2J3F0c9kZl0M3OqUu2X7qf6H8zP6tPZQ3Yx9Zq7cS', 1),
+    ('jerome',   'jerome@example.com',   '$2a$10$J8hE9r6mY2sYxZ8D3nK9fO0dJ8lZV2k7RrZ9q6bZtE7A3Hq4y', 1), 
+    ('bob', 'bob@example.com', '$2a$10$Qx7F9KZsM6A1R2p5bZJ4dU7T6Yx8ZLk2C9m0VnP3EwH5aB', 1);
 
 INSERT INTO user_connection (user_id, connection_id)
 VALUES

@@ -36,7 +36,7 @@ public class TransactionControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void should_process_transaction_successfully() throws Exception {
+    void transaction_success() throws Exception {
         Long senderId = 1L;
         TransactionRequestDTO dto = new TransactionRequestDTO();
         dto.setSenderId(senderId);
@@ -54,7 +54,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void should_return_bad_request_when_transaction_fails() throws Exception {
+    void transaction_fails() throws Exception {
         Long senderId = 1L;
         TransactionRequestDTO dto = new TransactionRequestDTO();
         dto.setSenderId(senderId);
@@ -73,7 +73,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    void should_fail_when_missing_fields() throws Exception {
+    void missing_fields() throws Exception {
         Long senderId = 1L;
         TransactionRequestDTO dto = new TransactionRequestDTO();
         dto.setSenderId(senderId);

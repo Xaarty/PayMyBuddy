@@ -104,7 +104,7 @@ input::placeholder{
   height: 62px;
   border: 0;
   border-radius: 8px;
-  background: #207fee;
+  background: #f69f1d;
   color: #ffffff;
   font-size: 24px;
   font-weight: 700;
@@ -126,14 +126,13 @@ input::placeholder{
   margin: 0 0 12px 0;
 }
 
-.sr-only{
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }

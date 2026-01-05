@@ -55,7 +55,7 @@ public class UserControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void should_register_user_successfully() throws Exception {
+    void register_user() throws Exception {
         UserRegistrationDTO dto = new UserRegistrationDTO("alice", "alice@example.com", "pass123");
 
         User mockUser = new User();
@@ -73,7 +73,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_fail_when_email_already_exists() throws Exception {
+    void email_already_exists() throws Exception {
         UserRegistrationDTO dto = new UserRegistrationDTO("john", "john@example.com", "secret");
 
         when(userService.existsByEmail(dto.getEmail())).thenReturn(true);
@@ -86,7 +86,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_authenticate_user_successfully() throws Exception {
+    void authenticate_user() throws Exception {
         LoginDTO loginDTO = new LoginDTO("john@example.com", "secret");
 
         when(userService.userAuthenticate(loginDTO.getEmail(), loginDTO.getPassword())).thenReturn(true);
@@ -99,7 +99,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_return_unauthorized_on_invalid_login() throws Exception {
+    void invalid_login() throws Exception {
         LoginDTO loginDTO = new LoginDTO("john@example.com", "wrongpassword");
 
         when(userService.userAuthenticate(loginDTO.getEmail(), loginDTO.getPassword())).thenReturn(false);
@@ -112,18 +112,15 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_update_user_profile_successfully() throws Exception {
-        // Étape 1 : Identifiant cible
+    void update_user_profile() throws Exception {
         Long userId = 1L;
 
-        // Étape 2 : Préparer la réponse simulée
         User mockUpdatedUser = new User();
         mockUpdatedUser.setId(userId);
         mockUpdatedUser.setUsername("updatedUser");
         mockUpdatedUser.setEmail("updated@example.com");
         mockUpdatedUser.setPassword("hashedPassword");
 
-        // Étape 3 : Corps JSON
         String jsonUpdate = """
         {
           "username": "updatedUser",
@@ -132,10 +129,8 @@ public class UserControllerTest {
         }
     """;
 
-        // Étape 4 : Simuler le comportement du service
         when(userService.updateProfile(eq(userId), any())).thenReturn(mockUpdatedUser);
 
-        // Étape 5 : Requête MockMvc
         mockMvc.perform(put("/api/profile/" + userId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonUpdate))
@@ -144,7 +139,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_add_connection_via_api() throws Exception {
+    void add_connection() throws Exception {
         User userA = new User("Rick", "rick" + UUID.randomUUID() + "@example.com", "hashed");
         userA.setActive(true);
         userRepository.save(userA);
@@ -159,13 +154,13 @@ public class UserControllerTest {
     }
 
     @Test
-    void should_fail_to_add_self_as_connection_via_api() throws Exception {
+    void add_self() throws Exception {
         // Création de l'utilisateur
         User user = new User("self", "self@example.com", "hashed");
         user.setActive(true);
         userRepository.save(user);
 
-        // Mock du comportement pour lever l'exception
+        // Mock pour lever l'exception
         doThrow(new IllegalArgumentException("You cannot add yourself as a connection."))
                 .when(userService).addConnection(user.getId(), user.getId());
 
@@ -214,7 +209,7 @@ public class UserControllerTest {
         User updated = new User();
         updated.setId(userId);
         updated.setUsername("Laurent");
-        updated.setEmail("new@mail.com");  // 👈 Ajoute bien l'email aussi
+        updated.setEmail("new@mail.com");
 
         Mockito.when(userService.updateProfile(eq(userId), any(ProfileUpdateDTO.class))).thenReturn(updated);
 
@@ -222,11 +217,11 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Profil mis à jour pour : Laurent")));  // match plus précis
+                .andExpect(content().string(containsString("Profil mis à jour pour : Laurent")));
     }
 
     @Test
-    void Update_profile_failure() throws Exception {
+    void update_profile_failure() throws Exception {
 
         Long userId = 1L;
         ProfileUpdateDTO dto = new ProfileUpdateDTO("", "", "");
@@ -271,7 +266,6 @@ public class UserControllerTest {
     void deactivate_user() throws Exception {
         Long userId = 1L;
 
-        // On ne vérifie pas l'effet mais la réponse
         mockMvc.perform(delete("/api/users/{id}", userId))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Compte désactivé avec succès."));

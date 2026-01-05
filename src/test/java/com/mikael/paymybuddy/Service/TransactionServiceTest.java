@@ -31,7 +31,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testValidTransaction() {
+    void valid_transaction() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
         sender.setActive(true);
@@ -59,7 +59,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testTransactionFailsIfReceiverNotInConnections() {
+    void transaction_not_in_connections() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
         sender.setActive(true);
@@ -80,7 +80,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testTransactionFailsIfInsufficientBalance() {
+    void transaction_insufficient_balance() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
         sender.setActive(true);
@@ -102,7 +102,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testTransactionFailsIfInvalidAmount() {
+    void transaction_invalid_amount() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
         sender.setActive(true);
@@ -124,7 +124,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testTransactionFailsIfSenderNotFound() {
+    void transaction_sender_not_found() {
         TransactionRequestDTO dto = new TransactionRequestDTO(1L, 2L, new BigDecimal("20.00"), "Test");
 
         when(userRepository.findByIdAndActiveTrue(1L)).thenReturn(Optional.empty());
@@ -135,7 +135,7 @@ class TransactionServiceTest {
     }
 
     @Test
-    void testTransactionFailsIfReceiverNotFound() {
+    void transaction_receiver_not_found() {
         User sender = new User("Alice", "alice@example.com", "pass");
         sender.setId(1L);
         sender.setActive(true);

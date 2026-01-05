@@ -32,7 +32,6 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    //Inscription
     @Transactional
     public User registerUser(UserRegistrationDTO dto) {
 
@@ -56,18 +55,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    //Connexion
     public boolean userAuthenticate(String email, String password) {
         // Récupèration de l'utilisateur à partir de l'email saisi
         Optional<User> user = userRepository.findByEmail(email);
         if (user.isEmpty()) return false;
-        //vérification de l'existance du mot de passe
+
         String stored = user.get().getPassword();
-        // évite le WARN + refuse les anciens passwords non-hashés
+        // Vérification du mot de passe BCrypt
         if (stored == null || !stored.startsWith("$2a$") && !stored.startsWith("$2b$") && !stored.startsWith("$2y$")) {
             return false;
         }
-
 
         return passwordEncoder.matches(password, stored);
     }

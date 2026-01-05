@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Ajouter relation - Pay My Buddy</title>
-  <link rel="stylesheet" th:href="@{/css/connections.css}">
+  <link rel="stylesheet"
+        data-th-href="@{/css/connections.css}"
+        href="/css/connections.css">
 </head>
 
 <body>
@@ -20,7 +22,9 @@
 </header>
 
 <main class="page">
-  <section class="panel-add">
+  <section class="panel-add" aria-labelledby="panel-add-title">
+
+    <h1 id="panel-add-title" class="sr-only">Ajouter une relation</h1>
 
     <form class="add-form" action="/connections" method="post">
       <div class="form-left">
@@ -37,8 +41,10 @@
 
       <button type="submit" class="btn">Ajouter</button>
     </form>
-    <p class="error" th:if="${error}" th:text="${error}"></p>
-    <p class="success" th:if="${success}" th:text="${success}"></p>
+
+    <p class="error" data-th-if="${error}" data-th-text="${error}"></p>
+    <p class="success" data-th-if="${success}" data-th-text="${success}"></p>
+
   </section>
 </main>
 

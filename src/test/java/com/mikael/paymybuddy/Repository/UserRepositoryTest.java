@@ -23,7 +23,7 @@ public class UserRepositoryTest {
         User user = new User();
         user.setUsername("anna");
         user.setEmail("anna@example.com");
-        user.setPassword("hash"); // plus tard: hash BCrypt
+        user.setPassword("hash");
 
         userRepository.save(user);
 

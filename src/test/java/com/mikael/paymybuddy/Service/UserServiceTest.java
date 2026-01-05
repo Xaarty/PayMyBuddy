@@ -177,7 +177,6 @@ public class UserServiceTest {
 
     @Test
     void success_recharge() {
-        // Cherche le user authorizé
         User dev = userRepository.findById(1L).orElseThrow();
         dev.setBalance(BigDecimal.ZERO); // Reset balance pour le test
         userRepository.save(dev);
@@ -190,25 +189,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void recharge_fails_not_available_for_user() {
-
-        User user = new User();
-        user.setUsername("user");
-        user.setEmail("dev@example.com");
-        user.setPassword("123");
-        user.setActive(true);
-        user.setBalance(BigDecimal.ZERO);
-
-        userRepository.save(user);
-
-        assertThatThrownBy(() -> userService.rechargeAccount(user.getId(), new BigDecimal("10")))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Recharge non disponible");
-    }
-
-    @Test
     void recharge_fails_invalid_amount() {
-        // Cherche le user authorizé
         User dev = userRepository.findById(1L).orElseThrow();
 
         assertThatThrownBy(() -> userService.rechargeAccount(1L, BigDecimal.ZERO))

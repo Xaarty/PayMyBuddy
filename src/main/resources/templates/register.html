@@ -1,38 +1,58 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Inscription - Pay My Buddy</title>
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+
+    <link rel="stylesheet"
+          data-th-href="@{/css/register.css}"
+          href="/css/register.css">
 </head>
 
 <body>
 <main>
-    <div class="box">
-        <h1>Pay My Buddy</h1>
+    <section class="box" aria-labelledby="register-title">
 
-        <form action="#" method="post">
+        <h1 id="register-title">Pay My Buddy</h1>
+
+        <form data-th-action="@{/register}" action="/register" method="post">
             <div>
                 <label for="username">Username</label>
-                <input id="username" name="username" type="text" placeholder="Username" required autocomplete="username">
+                <input id="username"
+                       name="username"
+                       type="text"
+                       placeholder="Username"
+                       required
+                       autocomplete="username">
             </div>
 
             <div>
                 <label for="email">Mail</label>
-                <input id="email" name="email" type="email" placeholder="Mail" required autocomplete="email">
+                <input id="email"
+                       name="email"
+                       type="email"
+                       placeholder="Mail"
+                       required
+                       autocomplete="email">
             </div>
 
             <div>
                 <label for="password">Mot de passe</label>
-                <input id="password" name="password" type="password" placeholder="Mot de passe" required autocomplete="new-password">
+                <input id="password"
+                       name="password"
+                       type="password"
+                       placeholder="Mot de passe"
+                       required
+                       autocomplete="new-password">
             </div>
 
             <button type="submit">S’inscrire</button>
         </form>
-    </div>
+
+    </section>
 
     <p>
-        <a th:href="@{/login}">Se connecter</a>
+        <a data-th-href="@{/login}" href="/login">Se connecter</a>
     </p>
 </main>
 </body>
